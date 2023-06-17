@@ -147,6 +147,19 @@ public class MainWindow extends JFrame {
 	private JMenuItem mntmAbout;
 	private JMenuItem mntmContens;
 	private JFileChooser selector=null;
+	private JPanel pnDown;
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
+	private JPanel pnTicket;
+	private JLabel lblNewLabel_1;
+	private JPanel pnValidate;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JPanel pnText;
+	private JTextField textField_2;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JLabel lblNewLabel_2;
 	/**
 	 * Create the frame.
 	 */
@@ -174,6 +187,8 @@ public class MainWindow extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				associateImagesToButtons();
+				//associateImagesToLabels();	
+			
 			}
 		});
 		
@@ -186,23 +201,22 @@ public class MainWindow extends JFrame {
 		}
 	}
 	
+	private void associateImagesToLabels()
+	{
+		
+		for (int i = 0; i < game.getBoard().getDim(); i++) {
+		    for (int j = 0; j < game.getBoard().getDim(); j++) {
+		        JLabel label = (JLabel) pnBoard.getComponent(i * game.getBoard().getDim() + j);
+		        adaptImage2(label, game.getBoard().getPicture(i, j));
+		    }
+		}
+
+		
+	}
 	
-	private JLabel getLblTicket() {
-		if (lblTicket == null) {
-			lblTicket = new JLabel("Enter ticket number:");
-			lblTicket.setBounds(78, 266, 155, 51);
-			lblTicket.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		}
-		return lblTicket;
-	}
-	private JTextField getTxtTicket() {
-		if (txtTicket == null) {
-			txtTicket = new JTextField();
-			txtTicket.setBounds(243, 280, 335, 30);
-			txtTicket.setColumns(10);
-		}
-		return txtTicket;
-	}
+	
+	
+	
 	
 	private boolean isEmpty() {
 		return ( txtTicket.getText().equals("")); 
@@ -255,7 +269,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnStart() {
 		if (btnStart == null) {
 			btnStart = new JButton("Start Game ");
-			btnStart.setBounds(689, 360, 96, 26);
+			btnStart.setMnemonic('S');
 			btnStart.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -275,7 +289,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnExit() {
 		if (btnExit == null) {
 			btnExit = new JButton("Exit");
-			btnExit.setBounds(39, 358, 64, 30);
+			btnExit.setMnemonic('X');
 			btnExit.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -304,12 +318,14 @@ public class MainWindow extends JFrame {
 	private JPanel getPn1() {
 		if (pn1 == null) {
 			pn1 = new JPanel();
-			pn1.setLayout(null);
-			pn1.add(getLblTicket());
-			pn1.add(getTxtTicket());
-			pn1.add(getLblLink());
-			pn1.add(getBtnStart());
-			pn1.add(getBtnExit());
+			pn1.setLayout(new BorderLayout(0, 0));
+			pn1.add(getPnDown(), BorderLayout.SOUTH);
+			pn1.add(getPnTicket(), BorderLayout.CENTER);
+			//pn1.add(getLblTicket());
+			//pn1.add(getTxtTicket());
+			//pn1.add(getLblLink());
+			//pn1.add(getBtnStart());
+			//pn1.add(getBtnExit());
 		}
 		return pn1;
 	}
@@ -317,7 +333,6 @@ public class MainWindow extends JFrame {
 		if (lblLink == null) {
 			lblLink = new JLabel("");
 			lblLink.setIcon(new ImageIcon(MainWindow.class.getResource("/img/400px-Link.png")));
-			lblLink.setBounds(399, 0, 386, 270);
 		}
 		return lblLink;
 	}
@@ -377,6 +392,7 @@ public class MainWindow extends JFrame {
 	private JButton getButton_1() {
 		if (btnGame == null) {
 			btnGame = new JButton("Start game ");
+			btnGame.setMnemonic('S');
 			btnGame.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -475,6 +491,7 @@ private void showFirst() {
 		for (int i=0;i<5;i++) {
 			getPnCaracters().add(newDissaper(i));
 		}
+		
 		validate();
 	}
 	
@@ -531,7 +548,8 @@ private void showFirst() {
 		}
 		
 		
-			
+		
+		
 		validate();
 	}
 	
@@ -683,6 +701,7 @@ private void showFirst() {
 		//ImageIcon icon = ImageFactory.loadImage(game.getBoard().getPicture(i,j));
 		
 		game.getBoard().setPicture(i, j, imagen.toString().substring(imagen.toString().length()-10));
+		End1();
 		
 	}
 	
@@ -781,6 +800,7 @@ private void showFirst() {
 	private JButton getBtnConcede() {
 		if (btnConcede == null) {
 			btnConcede = new JButton("Concede");
+			btnConcede.setMnemonic('C');
 			btnConcede.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -916,6 +936,7 @@ private void showFirst() {
 	private JButton getBtnPrize() {
 		if (btnPrize == null) {
 			btnPrize = new JButton("Choose prize");
+			btnPrize.setMnemonic('C');
 			btnPrize.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -952,6 +973,7 @@ private void showFirst() {
 	private JButton getBtnLeave() {
 		if (btnLeave == null) {
 			btnLeave = new JButton("Exit");
+			btnLeave.setMnemonic('E');
 			btnLeave.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1006,6 +1028,18 @@ private void showFirst() {
 		button.setIcon(new ImageIcon(tmpImagen.getImage().getScaledInstance(
 				ancho, alto, Image.SCALE_SMOOTH)));
 	}
+	
+	private void adaptImage2(JLabel label, String imagePath) {
+		ImageIcon tmpImagen = new ImageIcon(getClass().getResource(imagePath));
+		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth()) / 100f;
+		if (tmpImagen.getIconHeight() > label.getHeight())
+			delta = ((label.getHeight() * 100) / tmpImagen.getIconHeight()) / 100f;
+		int ancho = (int) (tmpImagen.getIconWidth() * delta);
+		int alto = (int) (tmpImagen.getIconHeight() * delta);
+		label.setIcon(new ImageIcon(tmpImagen.getImage().getScaledInstance(
+				ancho, alto, Image.SCALE_SMOOTH)));
+	}
+
 	
 	
 	private void createProductButtons()
@@ -1283,9 +1317,11 @@ private void showFirst() {
 		if (pnCommand == null) {
 			pnCommand = new JPanel();
 			pnCommand.setLayout(new GridLayout(0, 3, 0, 0));
-			pnCommand.add(getBtnDelete());
-			pnCommand.add(getBtnAdd());
 			pnCommand.add(getBtnContinue());
+			
+			pnCommand.add(getBtnAdd());
+			pnCommand.add(getBtnDelete());
+			
 		}
 		return pnCommand;
 	}
@@ -1425,12 +1461,13 @@ private void showFirst() {
 	private JPanel getPnConfirm() {
 		if (pnConfirm == null) {
 			pnConfirm = new JPanel();
-			pnConfirm.setLayout(null);
-			pnConfirm.add(getLblPlease());
-			pnConfirm.add(getLblId());
-			pnConfirm.add(getTxtID());
-			pnConfirm.add(getButton_1_1());
-			pnConfirm.add(getButton_1_2());
+			pnConfirm.setLayout(new BorderLayout(0, 0));
+			pnConfirm.add(getLblPlease(), BorderLayout.SOUTH);
+			pnConfirm.add(getLblId(), BorderLayout.NORTH);
+		
+			
+			pnConfirm.add(getPanel_1(), BorderLayout.SOUTH);
+			pnConfirm.add(getPanel_2(), BorderLayout.CENTER);
 		}
 		return pnConfirm;
 	}
@@ -1438,7 +1475,6 @@ private void showFirst() {
 		if (lblPlease == null) {
 			lblPlease = new JLabel("Please enter ID:");
 			lblPlease.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-			lblPlease.setBounds(147, 143, 285, 19);
 		}
 		return lblPlease;
 	}
@@ -1446,14 +1482,12 @@ private void showFirst() {
 		if (lblId == null) {
 			lblId = new JLabel("ID:");
 			lblId.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblId.setBounds(152, 197, 67, 24);
 		}
 		return lblId;
 	}
 	private JTextField getTxtID() {
 		if (txtID == null) {
 			txtID = new JTextField();
-			txtID.setBounds(267, 197, 414, 29);
 			txtID.setColumns(10);
 		}
 		return txtID;
@@ -1476,7 +1510,6 @@ private void showFirst() {
 				}
 			});
 			btnConfirm.setBackground(new Color(0, 255, 0));
-			btnConfirm.setBounds(646, 283, 124, 36);
 		}
 		return btnConfirm;
 	}
@@ -1490,7 +1523,6 @@ private void showFirst() {
 				}
 			});
 			btnBack.setBackground(new Color(255, 0, 0));
-			btnBack.setBounds(25, 283, 120, 36);
 		}
 		return btnBack;
 	}
@@ -1505,10 +1537,10 @@ private void showFirst() {
 	private JPanel getPnMessage() {
 		if (pnMessage == null) {
 			pnMessage = new JPanel();
-			pnMessage.setLayout(null);
-			pnMessage.add(getLblCongrats());
+			pnMessage.setLayout(new BorderLayout(0, 0));
+			pnMessage.add(getLblCongrats(), BorderLayout.NORTH);
 			pnMessage.add(getLblPick());
-			pnMessage.add(getButton_1_3());
+			pnMessage.add(getButton_1_3(), BorderLayout.SOUTH);
 		}
 		return pnMessage;
 	}
@@ -1516,7 +1548,6 @@ private void showFirst() {
 		if (lblCongrats == null) {
 			lblCongrats = new JLabel("Congratulations!!");
 			lblCongrats.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-			lblCongrats.setBounds(197, 117, 339, 41);
 		}
 		return lblCongrats;
 	}
@@ -1524,13 +1555,13 @@ private void showFirst() {
 		if (lblPick == null) {
 			lblPick = new JLabel("You can pick up your prizez at your shop");
 			lblPick.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			lblPick.setBounds(197, 182, 404, 41);
 		}
 		return lblPick;
 	}
 	private JButton getButton_1_3() {
 		if (btnFinish == null) {
 			btnFinish = new JButton("Finish");
+			btnFinish.setMnemonic('F');
 			btnFinish.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1540,7 +1571,6 @@ private void showFirst() {
 			});
 			btnFinish.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnFinish.setBackground(new Color(0, 255, 0));
-			btnFinish.setBounds(302, 254, 159, 48);
 		}
 		return btnFinish;
 	}
@@ -1617,5 +1647,111 @@ private void showFirst() {
 		}
 		return selector;
 		
+	}
+	private JPanel getPnDown() {
+		if (pnDown == null) {
+			pnDown = new JPanel();
+			pnDown.setLayout(new BorderLayout(0, 0));
+			pnDown.add(getBtnExit(), BorderLayout.EAST);
+			pnDown.add(getBtnStart(), BorderLayout.WEST);
+		}
+		return pnDown;
+	}
+	private JButton getButton_1_4() {
+		if (btnNewButton == null) {
+			btnNewButton = new JButton("New button");
+		}
+		return btnNewButton;
+	}
+	private JButton getButton_1_5() {
+		if (btnNewButton_1 == null) {
+			btnNewButton_1 = new JButton("New button");
+			btnNewButton_1.setMaximumSize(new Dimension(100, 21));
+		}
+		return btnNewButton_1;
+	}
+	private JPanel getPnTicket() {
+		if (pnTicket == null) {
+			pnTicket = new JPanel();
+			pnTicket.setLayout(new BorderLayout(0, 0));
+			pnTicket.add(getLblLink(), BorderLayout.EAST);
+			pnTicket.add(getPnValidate(), BorderLayout.CENTER);
+		}
+		return pnTicket;
+	}
+	private JLabel getLblNewLabel_1() {
+		if (lblNewLabel_1 == null) {
+			lblNewLabel_1 = new JLabel("New label");
+		}
+		return lblNewLabel_1;
+	}
+	private JPanel getPnValidate() {
+		if (pnValidate == null) {
+			pnValidate = new JPanel();
+			pnValidate.setLayout(new BorderLayout(0, 0));
+			
+		
+			
+			
+			
+			pnValidate.add(getLblTicket(), BorderLayout.NORTH);
+			pnValidate.add(getPnText(), BorderLayout.CENTER);
+		}
+		return pnValidate;
+	}
+	
+	
+	private JLabel getLblTicket() { 
+		if (lblTicket == null) {
+		lblTicket = new
+			  JLabel("Enter ticket number:");
+			  lblTicket.setFont(new Font("Tahoma", Font.PLAIN, 17)); 
+			  } 
+	return lblTicket; }
+	
+	
+	 
+			 
+	
+	
+	private JPanel getPnText() {
+		if (pnText == null) {
+			pnText = new JPanel();
+			pnText.setLayout(new BorderLayout(0, 0));
+			pnText.add(getTxtTicket(), BorderLayout.NORTH);
+		}
+		return pnText;
+	}
+	private JTextField  getTxtTicket() {
+		if (txtTicket == null) {
+			txtTicket = new JTextField();
+			txtTicket.setColumns(10);
+		}
+		return txtTicket;
+	}
+	private JPanel getPanel_1() {
+		if (panel_1 == null) {
+			panel_1 = new JPanel();
+			panel_1.setLayout(new BorderLayout(0, 0));
+			panel_1.add(getButton_1_1(), BorderLayout.EAST);
+			panel_1.add(getButton_1_2(), BorderLayout.WEST);
+		}
+		return panel_1;
+	}
+	private JPanel getPanel_2() {
+		if (panel_2 == null) {
+			panel_2 = new JPanel();
+			panel_2.setLayout(new BorderLayout(0, 0));
+			panel_2.add(getTxtID(), BorderLayout.NORTH);
+			panel_2.add(getLblNewLabel_2(), BorderLayout.CENTER);
+		}
+		return panel_2;
+	}
+	private JLabel getLblNewLabel_2() {
+		if (lblNewLabel_2 == null) {
+			lblNewLabel_2 = new JLabel("Please enter your ID.");
+			lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		}
+		return lblNewLabel_2;
 	}
 }

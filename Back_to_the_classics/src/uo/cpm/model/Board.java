@@ -312,7 +312,7 @@ public class Board {
 				{
 					
 					
-					
+					continue;
 				}
 				else if(i==0&&j==6)
 				{
@@ -320,6 +320,11 @@ public class Board {
 					
 				}
 				else if(i==3&&j==3)
+				{
+					
+					
+				}
+				else if(i==6&&j==6)
 				{
 					
 					
