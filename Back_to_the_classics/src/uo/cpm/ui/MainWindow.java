@@ -44,6 +44,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -160,6 +161,7 @@ public class MainWindow extends JFrame {
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JLabel lblNewLabel_2;
+	private JLabel lblWelcome;
 	/**
 	 * Create the frame.
 	 */
@@ -214,6 +216,40 @@ public class MainWindow extends JFrame {
 		
 	}
 	
+	private void adaptImage2(JLabel label, String imagePath) {
+		ImageIcon tmpImagen = new ImageIcon(getClass().getResource(imagePath));
+		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth()) / 100f;
+		if (tmpImagen.getIconHeight() > label.getHeight())
+			delta = ((label.getHeight() * 100) / tmpImagen.getIconHeight()) / 100f;
+		int ancho = (int) (tmpImagen.getIconWidth() * delta);
+		int alto = (int) (tmpImagen.getIconHeight() * delta);
+		label.removePropertyChangeListener(pBT);
+		label.setIcon(new ImageIcon(tmpImagen.getImage().getScaledInstance(
+				ancho, alto, Image.SCALE_SMOOTH)));
+	}
+	
+	private void adaptImage3(JLabel label, String imagePath) {
+	    ImageIcon tmpImageIcon = new ImageIcon(getClass().getResource(imagePath));
+	    Image tmpImage = tmpImageIcon.getImage();
+	    int labelWidth = 38;
+	    int labelHeight = 44;
+
+	    // Check if the label's dimensions are non-zero
+	    if (labelWidth > 0 && labelHeight > 0) {
+	        float delta = Math.min((float) labelWidth / tmpImageIcon.getIconWidth(), (float) labelHeight / tmpImageIcon.getIconHeight());
+	        int scaledWidth = (int) (tmpImageIcon.getIconWidth() * delta);
+	        int scaledHeight = (int) (tmpImageIcon.getIconHeight() * delta);
+	        Image scaledImage = tmpImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+	        label.setIcon(new ImageIcon(scaledImage));
+	    } else {
+	        // Handle the case when the label's dimensions are not set yet
+	        label.setIcon(tmpImageIcon);
+	        label.setHorizontalAlignment(SwingConstants.CENTER);
+	        label.setVerticalAlignment(SwingConstants.CENTER);
+	    }
+	}
+
+	
 	
 	
 	
@@ -246,7 +282,7 @@ public class MainWindow extends JFrame {
 	 private boolean checkExit() {
 	    	if( JOptionPane.showConfirmDialog(this, "Are you sure you want to exit the game")== JOptionPane.YES_OPTION)
 	    	{
-	    		return true;
+	    		System.exit(0);
 	    	}
 	    	return false;
 	    }
@@ -567,6 +603,8 @@ private void showFirst() {
 	{
 		JLabel label = new JLabel("" + i+j);
 		label.setIcon(new ImageIcon(MainWindow.class.getResource(game.getBoard().getPicture(i,j))));
+		
+		adaptImage3(label,game.getBoard().getPicture(i,j));
 		return label;
 	}
 	
@@ -696,9 +734,16 @@ private void showFirst() {
 	
 	private void paintSquare(int i,int j) {
 		int poz=(i*7)+j;
+		  JLabel targetLabel = (JLabel) pnBoard.getComponent(poz);
 		Icon imagen = ((JLabel)pnBoard.getComponent(poz)).getIcon();
+		
 		String s=imagen.toString().substring(imagen.toString().length()-10);
+		adaptImage2(targetLabel,s);
+		targetLabel.addPropertyChangeListener(pBT);
 		//ImageIcon icon = ImageFactory.loadImage(game.getBoard().getPicture(i,j));
+		
+		
+	
 		
 		game.getBoard().setPicture(i, j, imagen.toString().substring(imagen.toString().length()-10));
 		End1();
@@ -1029,17 +1074,7 @@ private void showFirst() {
 				ancho, alto, Image.SCALE_SMOOTH)));
 	}
 	
-	private void adaptImage2(JLabel label, String imagePath) {
-		ImageIcon tmpImagen = new ImageIcon(getClass().getResource(imagePath));
-		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth()) / 100f;
-		if (tmpImagen.getIconHeight() > label.getHeight())
-			delta = ((label.getHeight() * 100) / tmpImagen.getIconHeight()) / 100f;
-		int ancho = (int) (tmpImagen.getIconWidth() * delta);
-		int alto = (int) (tmpImagen.getIconHeight() * delta);
-		label.setIcon(new ImageIcon(tmpImagen.getImage().getScaledInstance(
-				ancho, alto, Image.SCALE_SMOOTH)));
-	}
-
+	
 	
 	
 	private void createProductButtons()
@@ -1719,6 +1754,7 @@ private void showFirst() {
 			pnText = new JPanel();
 			pnText.setLayout(new BorderLayout(0, 0));
 			pnText.add(getTxtTicket(), BorderLayout.NORTH);
+			pnText.add(getLblWelcome(), BorderLayout.CENTER);
 		}
 		return pnText;
 	}
@@ -1753,5 +1789,13 @@ private void showFirst() {
 			lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		}
 		return lblNewLabel_2;
+	}
+	private JLabel getLblWelcome() {
+		if (lblWelcome == null) {
+			lblWelcome = new JLabel("Press start button after you enter a valid ticket");
+			lblWelcome.setForeground(new Color(255, 128, 64));
+			lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 17));
+		}
+		return lblWelcome;
 	}
 }
