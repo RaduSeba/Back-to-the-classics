@@ -20,9 +20,14 @@ public class Game {
 	String[] filter = {"Filter by","Available Products","Accessories","Consoles","Videogames"};
 
 	
-	public boolean checkTicket(Ticket t)
+	public boolean checkTicketPrice(Ticket t)
 	{
-		return check.checkValidity(t);
+		return check.checkValidityPrice(t);
+	}
+	
+	public boolean checkTicketStore(Ticket t)
+	{
+		return check.checkValidityStore(t);
 	}
 	
 	public void saveTicket()

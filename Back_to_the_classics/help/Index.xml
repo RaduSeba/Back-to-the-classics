@@ -8,6 +8,7 @@
   <indexitem text="start game" target="start" />
    <indexitem text="quit game" target="quit" />
     <indexitem text="award shop" target="shop" />
+      <indexitem text="pickup prizes" target="pickup" />
     
     
         

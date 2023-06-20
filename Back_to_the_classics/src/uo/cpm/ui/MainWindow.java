@@ -261,16 +261,31 @@ public class MainWindow extends JFrame {
 		return ( txtID.getText().equals("")); 
 	}
 	
-	private boolean isIncorrect() {
+	private boolean isIncorrect1() {
 		Ticket t=game.getTicket(txtTicket.getText());
 		if(t==null)
 		{
 			return true;
 		}
 		
-		if( game.checkTicket(t)==true)
+		if( game.checkTicketPrice(t)==true)
 		{
 			game.delete(t);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean isIncorrect2() {
+		Ticket t=game.getTicket(txtTicket.getText());
+		if(t==null)
+		{
+			return true;
+		}
+		
+		if( game.checkTicketStore(t)==true)
+		{
+			
 			return false;
 		}
 		return true;
@@ -394,11 +409,17 @@ public class MainWindow extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error: The field cannot be empty");
 			return false;
 		}
-		else
-			if (isIncorrect()) {
-				JOptionPane.showMessageDialog(null, "Error: The ticket is not valid.The purchase has to be grater than 20 euro and the store needs to be a valid one");
+		else {
+			
+			 if (isIncorrect2()) {
+			JOptionPane.showMessageDialog(null, "Error: The ticket is not valid.The store is not valid");
+			return false;
+			}
+			 else if (isIncorrect1()) {
+				JOptionPane.showMessageDialog(null, "Error: The ticket is not valid.The purchase is not grater than 20 euro");
 				return false;
 			}
+		}
 		return true;
 	 }
 	private JPanel getPn2() {
@@ -444,6 +465,7 @@ public class MainWindow extends JFrame {
 	private JTextArea getTxtArea() {
 		if (txtArea == null) {
 			txtArea = new JTextArea();
+			txtArea.setEditable(false);
 			txtArea.setText("Tutorial for the game:\n"+"The game takes place on a board with 7 rows and 7 columns. All the squares can be occupied\r\n"
 					+ "by a character (or invader) except for the squares in the corners and center of the board, which\r\n"
 					+ "will be considered non-accessible positions in the territory.\r\n"
@@ -1363,6 +1385,7 @@ private void showFirst() {
 	private JButton getBtnAdd() {
 		if (btnAdd == null) {
 			btnAdd = new JButton("Add");
+			btnAdd.setMnemonic('A');
 			btnAdd.setEnabled(false);
 			btnAdd.addActionListener(new ActionListener() {
 				@Override
@@ -1417,6 +1440,7 @@ private void showFirst() {
 	private JButton getBtnContinue() {
 		if (btnContinue == null) {
 			btnContinue = new JButton("Continue");
+			btnContinue.setMnemonic('C');
 			btnContinue.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1431,6 +1455,7 @@ private void showFirst() {
 	private JButton getBtnDelete() {
 		if (btnDelete == null) {
 			btnDelete = new JButton("Delete");
+			btnDelete.setMnemonic('D');
 			btnDelete.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1530,6 +1555,7 @@ private void showFirst() {
 	private JButton getButton_1_1() {
 		if (btnConfirm == null) {
 			btnConfirm = new JButton("Confirm");
+			btnConfirm.setMnemonic('C');
 			btnConfirm.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1551,6 +1577,7 @@ private void showFirst() {
 	private JButton getButton_1_2() {
 		if (btnBack == null) {
 			btnBack = new JButton("Back");
+			btnBack.setMnemonic('B');
 			btnBack.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1785,7 +1812,8 @@ private void showFirst() {
 	}
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("Please enter your ID.");
+			lblNewLabel_2 = new JLabel("                                 Please enter your valid ID.");
+			lblNewLabel_2.setForeground(new Color(255, 0, 0));
 			lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		}
 		return lblNewLabel_2;
@@ -1793,7 +1821,7 @@ private void showFirst() {
 	private JLabel getLblWelcome() {
 		if (lblWelcome == null) {
 			lblWelcome = new JLabel("Press start button after you enter a valid ticket");
-			lblWelcome.setForeground(new Color(255, 128, 64));
+			lblWelcome.setForeground(new Color(255, 0, 0));
 			lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 17));
 		}
 		return lblWelcome;
