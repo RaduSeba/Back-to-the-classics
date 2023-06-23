@@ -1,9 +1,29 @@
- body { font-size:14pt;
-	font-family: Helvetica, Geneva, Arial, sans-serif;
-	color: white } 
 
- h1 { 	font-size:24px;
-	font-family: Helvetica, Geneva, Arial, sans-serif;
-	color: red } 
+body {
+	font-family: Arial, sans-serif;
+	margin: 20px;
+}
 
- ul {	list-style-type: circle;}
+h1 {
+	color: #333;
+	font-size: 28px;
+	margin-bottom: 10px;
+}
+
+p {
+	color: #666;
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+ul {
+	list-style-type: disc;
+	color: #666;
+	font-size: 16px;
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+li {
+	margin-bottom: 5px;
+}

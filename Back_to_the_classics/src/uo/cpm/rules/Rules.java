@@ -37,7 +37,7 @@ public class Rules {
 			((Caracter)board.getCells()[i][j]).setErased(true);
 			
 		}
-		//score = score + board.getCells()[i][j].discover();
+	
 	}
 	
 	
@@ -45,17 +45,16 @@ public class Rules {
 	public boolean isGameOver() {
 		if(board.isFull()==true)
 		{
-			if(this.wave==11)
-			{
-				return true;
-			}
+			return true;
 		}
+		
+		
 		return false;
 	}
 	
 	public boolean win()
 	{
-		if(board.isFull()==false)
+		if(board.isFull()== false)
 		{
 			if(this.wave==11)
 			{

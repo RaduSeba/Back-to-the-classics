@@ -297,6 +297,46 @@ public class Board {
 	}
 	
 	
+//	public void checkInvader(int i, int j) {
+//	    String find = cells[i][j].getPicture();
+//
+//	    // Check for horizontal patterns
+//	    if (j >= 2 && cells[i][j - 2].getSubstring().equals(find) && cells[i][j - 1].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i][j - 1] = new Eliminate(find);
+//	        cells[i][j - 2] = new Eliminate(find);
+//	    } else if (j <= 4 && cells[i][j + 1].getSubstring().equals(find) && cells[i][j + 2].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i][j + 1] = new Eliminate(find);
+//	        cells[i][j + 2] = new Eliminate(find);
+//	    }
+//
+//	    // Check for vertical patterns
+//	    if (i >= 2 && cells[i - 2][j].getSubstring().equals(find) && cells[i - 1][j].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i - 1][j] = new Eliminate(find);
+//	        cells[i - 2][j] = new Eliminate(find);
+//	    } else if (i <= 4 && cells[i + 1][j].getSubstring().equals(find) && cells[i + 2][j].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i + 1][j] = new Eliminate(find);
+//	        cells[i + 2][j] = new Eliminate(find);
+//	    }
+//
+//	    // Check for cross patterns
+//	    if (i >= 1 && i <= 5 && j >= 1 && j <= 5) {
+//	        if (cells[i - 1][j].getSubstring().equals(find) && cells[i + 1][j].getSubstring().equals(find) &&
+//	            cells[i][j - 1].getSubstring().equals(find) && cells[i][j + 1].getSubstring().equals(find)) {
+//	            cells[i][j] = new Eliminate(find);
+//	            cells[i - 1][j] = new Eliminate(find);
+//	            cells[i + 1][j] = new Eliminate(find);
+//	            cells[i][j - 1] = new Eliminate(find);
+//	            cells[i][j + 1] = new Eliminate(find);
+//	        }
+//	    }
+//	}
+
+	
+	
 	public boolean isFull()
 	{
 		for (int i=0;i<dim;i++)
@@ -306,22 +346,23 @@ public class Board {
 				if(i==0&&j==0)
 				{
 					
-					
 				}
 				else if(i==6&&j==0)
 				{
 					
 					
-					
+					continue;
 				}
 				else if(i==0&&j==6)
 				{
-					
 					
 				}
 				else if(i==3&&j==3)
 				{
 					
+				}
+				else if(i==6&&j==6)
+				{
 					
 				}
 				else if(cells[i][j].getPicture().equals(""))

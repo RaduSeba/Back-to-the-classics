@@ -62,21 +62,38 @@ public class TicketCheck {
 		FileUtil.saveToFile("tickets", ticketslist.getListTickets());
 	}
 	
-	public boolean checkValidity(Ticket t)
+	public boolean checkValidityPrice(Ticket t)
 	{
 		for(Store s: stores)
 		{
-			if(t.getNumber().substring(0,8).equals(s.getCode()))
-			{
+			
 				if(t.getPrice()>=20)
 				{
 					return true;
 				}
 				
+			
+		}
+		return false;
+	}
+	
+	
+	public boolean checkValidityStore(Ticket t)
+	{
+		for(Store s: stores)
+		{
+			if(t.getNumber().substring(0,8).equals(s.getCode()))
+			{
+				
+					return true;
+				
+				
 			}
 		}
 		return false;
 	}
+	
+	
 	public Store getStore()
 	{
 		return stores.get(0);

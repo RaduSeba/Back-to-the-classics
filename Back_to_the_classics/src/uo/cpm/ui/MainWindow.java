@@ -42,8 +42,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -51,6 +53,7 @@ import javax.swing.border.LineBorder;
 import uo.cpm.model.Product;
 import uo.cpm.model.Ticket;
 import uo.cpm.service.Game;
+import javax.swing.JSeparator;
 
 public class MainWindow extends JFrame {
 
@@ -77,9 +80,6 @@ public class MainWindow extends JFrame {
 	private JPanel pnCaracters;
 	private JPanel pnBoard;
 	private JPanel pnState;
-	private String caracters[]= {"/img/1.jpg","/img/2.png","/img/3.png","/img/4.jpg","/img/5.jpg","/img/6.png","/img/8.png","/img/7.png"};
-	private String leader="/img/7.png";
-
 	private Drag pD=new Drag();;
 	private ProcessLabel pBT= new ProcessLabel();
 	private JButton btnConcede;
@@ -132,7 +132,6 @@ public class MainWindow extends JFrame {
 	private JPanel pnId;
 	private JPanel pnConfirm;
 	private JLabel lblPlease;
-	private JLabel lblId;
 	private JTextField txtID;
 	private JButton btnConfirm;
 	private JButton btnBack;
@@ -142,11 +141,28 @@ public class MainWindow extends JFrame {
 	private JLabel lblPick;
 	private JButton btnFinish;
 	private int debug;
-	private int same=(int) (Math.random() * 7);
 	private Integer d;
 	private JMenuItem mntmAbout;
 	private JMenuItem mntmContens;
 	private JFileChooser selector=null;
+	private JPanel pnDown;
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
+	private JPanel pnTicket;
+	private JLabel lblNewLabel_1;
+	private JPanel pnValidate;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JPanel pnText;
+	private JTextField textField_2;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JLabel lblNewLabel_2;
+	private JLabel lblWelcome;
+	private JLabel lblMario;
+	private JLabel lblMario2;
+	private JPanel pnIdText;
+	private JSeparator separator;
 	/**
 	 * Create the frame.
 	 */
@@ -160,6 +176,7 @@ public class MainWindow extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 832, 546);
+		setLocationRelativeTo(null);
 		setJMenuBar(getMenuBar_1());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -174,6 +191,8 @@ public class MainWindow extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				associateImagesToButtons();
+				//associateImagesToLabels();	
+			
 			}
 		});
 		
@@ -187,22 +206,43 @@ public class MainWindow extends JFrame {
 	}
 	
 	
-	private JLabel getLblTicket() {
-		if (lblTicket == null) {
-			lblTicket = new JLabel("Enter ticket number:");
-			lblTicket.setBounds(78, 266, 155, 51);
-			lblTicket.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		}
-		return lblTicket;
+	private void adaptImage2(JLabel label, String imagePath) {
+		ImageIcon tmpImagen = new ImageIcon(getClass().getResource(imagePath));
+		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth()) / 100f;
+		if (tmpImagen.getIconHeight() > label.getHeight())
+			delta = ((label.getHeight() * 100) / tmpImagen.getIconHeight()) / 100f;
+		int ancho = (int) (tmpImagen.getIconWidth() * delta);
+		int alto = (int) (tmpImagen.getIconHeight() * delta);
+		label.removePropertyChangeListener(pBT);
+		label.setIcon(new ImageIcon(tmpImagen.getImage().getScaledInstance(
+				ancho, alto, Image.SCALE_SMOOTH)));
 	}
-	private JTextField getTxtTicket() {
-		if (txtTicket == null) {
-			txtTicket = new JTextField();
-			txtTicket.setBounds(243, 280, 335, 30);
-			txtTicket.setColumns(10);
-		}
-		return txtTicket;
+	
+	private void adaptImage3(JLabel label, String imagePath) {
+	    ImageIcon tmpImageIcon = new ImageIcon(getClass().getResource(imagePath));
+	    Image tmpImage = tmpImageIcon.getImage();
+	    int labelWidth = 38;
+	    int labelHeight = 44;
+
+	    // Check if the label's dimensions are non-zero
+	    if (labelWidth > 0 && labelHeight > 0) {
+	        float delta = Math.min((float) labelWidth / tmpImageIcon.getIconWidth(), (float) labelHeight / tmpImageIcon.getIconHeight());
+	        int scaledWidth = (int) (tmpImageIcon.getIconWidth() * delta);
+	        int scaledHeight = (int) (tmpImageIcon.getIconHeight() * delta);
+	        Image scaledImage = tmpImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+	        label.setIcon(new ImageIcon(scaledImage));
+	    } else {
+	        // Handle the case when the label's dimensions are not set yet
+	        label.setIcon(tmpImageIcon);
+	        label.setHorizontalAlignment(SwingConstants.CENTER);
+	        label.setVerticalAlignment(SwingConstants.CENTER);
+	    }
 	}
+
+	
+	
+	
+	
 	
 	private boolean isEmpty() {
 		return ( txtTicket.getText().equals("")); 
@@ -211,14 +251,14 @@ public class MainWindow extends JFrame {
 		return ( txtID.getText().equals("")); 
 	}
 	
-	private boolean isIncorrect() {
+	private boolean isIncorrect1() {
 		Ticket t=game.getTicket(txtTicket.getText());
 		if(t==null)
 		{
 			return true;
 		}
 		
-		if( game.checkTicket(t)==true)
+		if( game.checkTicketPrice(t)==true)
 		{
 			game.delete(t);
 			return false;
@@ -226,13 +266,27 @@ public class MainWindow extends JFrame {
 		return true;
 	}
 	
+	private boolean isIncorrect2() {
+		Ticket t =  game.getTicket(txtTicket.getText());
+		if(t==null)
+		{
+			return true;
+		}
+		
+		if( game.checkTicketStore(t)==true)
+		{
+			
+			return false;
+		}
+		return true;
+	}
 	
 	
 	
 	 private boolean checkExit() {
 	    	if( JOptionPane.showConfirmDialog(this, "Are you sure you want to exit the game")== JOptionPane.YES_OPTION)
 	    	{
-	    		return true;
+	    		System.exit(0);
 	    	}
 	    	return false;
 	    }
@@ -255,7 +309,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnStart() {
 		if (btnStart == null) {
 			btnStart = new JButton("Start Game ");
-			btnStart.setBounds(689, 360, 96, 26);
+			btnStart.setMnemonic('S');
 			btnStart.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -275,7 +329,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnExit() {
 		if (btnExit == null) {
 			btnExit = new JButton("Exit");
-			btnExit.setBounds(39, 358, 64, 30);
+			btnExit.setMnemonic('X');
 			btnExit.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -304,12 +358,14 @@ public class MainWindow extends JFrame {
 	private JPanel getPn1() {
 		if (pn1 == null) {
 			pn1 = new JPanel();
-			pn1.setLayout(null);
-			pn1.add(getLblTicket());
-			pn1.add(getTxtTicket());
-			pn1.add(getLblLink());
-			pn1.add(getBtnStart());
-			pn1.add(getBtnExit());
+			pn1.setLayout(new BorderLayout(0, 0));
+			pn1.add(getPnDown(), BorderLayout.SOUTH);
+			pn1.add(getPnTicket(), BorderLayout.CENTER);
+			//pn1.add(getLblTicket());
+			//pn1.add(getTxtTicket());
+			//pn1.add(getLblLink());
+			//pn1.add(getBtnStart());
+			//pn1.add(getBtnExit());
 		}
 		return pn1;
 	}
@@ -317,7 +373,6 @@ public class MainWindow extends JFrame {
 		if (lblLink == null) {
 			lblLink = new JLabel("");
 			lblLink.setIcon(new ImageIcon(MainWindow.class.getResource("/img/400px-Link.png")));
-			lblLink.setBounds(399, 0, 386, 270);
 		}
 		return lblLink;
 	}
@@ -331,8 +386,10 @@ public class MainWindow extends JFrame {
 	private JMenu getMnhelp() {
 		if (mnhelp == null) {
 			mnhelp = new JMenu("Help");
-			mnhelp.add(getMntmAbout());
+			mnhelp.setMnemonic('H');
 			mnhelp.add(getMntmContens());
+			mnhelp.add(getSeparator());
+			mnhelp.add(getMntmAbout());
 		}
 		return mnhelp;
 	}
@@ -343,11 +400,17 @@ public class MainWindow extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error: The field cannot be empty");
 			return false;
 		}
-		else
-			if (isIncorrect()) {
-				JOptionPane.showMessageDialog(null, "Error: The ticket is not valid.The purchase has to be grater than 20 euro and the store needs to be a valid one");
+		else {
+			
+			 if (isIncorrect2()) {
+			JOptionPane.showMessageDialog(null, "Error: The ticket is not valid.The store is not valid");
+			return false;
+			}
+			 else if (isIncorrect1()) {
+				JOptionPane.showMessageDialog(null, "Error: The ticket is not valid.The purchase is not grater than 20 euro");
 				return false;
 			}
+		}
 		return true;
 	 }
 	private JPanel getPn2() {
@@ -377,6 +440,7 @@ public class MainWindow extends JFrame {
 	private JButton getButton_1() {
 		if (btnGame == null) {
 			btnGame = new JButton("Start game ");
+			btnGame.setMnemonic('S');
 			btnGame.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -389,33 +453,36 @@ public class MainWindow extends JFrame {
 		}
 		return btnGame;
 	}
+	
 	private JTextArea getTxtArea() {
-		if (txtArea == null) {
-			txtArea = new JTextArea();
-			txtArea.setText("Tutorial for the game:\n"+"The game takes place on a board with 7 rows and 7 columns. All the squares can be occupied\r\n"
-					+ "by a character (or invader) except for the squares in the corners and center of the board, which\r\n"
-					+ "will be considered non-accessible positions in the territory.\r\n"
-					+ " In the game, eight different types of characters from classic video games will be considered, at\r\n"
-					+ "the student's choice. One of them (the one chosen by the student) will be the leader of the\r\n"
-					+ "invasion and, therefore, will have an important role in the game, as will be described later.\r\n"
-					+ " At the start of a game, 5 randomly generated invaders will have already occupied part of the\r\n"
-					+ "territory or game board, in randomly generated positions. The rest will start with their invasion\n"+"The player starts from an initial balance of 0 points. Current score must be always visible and\r\n"
-							+ "updated in the interface. This balance will increase in each interaction by 50 points when making\r\n"
-							+ "a group of 3 invaders disappear, by 200 if the group is of 4, 1000 if it is of 5, 5000 if it is of 6 and\r\n"
-							+ "10000 if it is of 7. If more than one colony is destroyed in the same iteration, the corresponding\r\n"
-							+ "points of each of them will be added\n"+"When a colony of 5 or more leader type characters. It is considered that if 5 or more of these\r\n"
-									+ "individuals disappear at once, the invasion ends cause a large part of its leaders are eliminated. In\r\n"
-									+ "this case, no more invaders will arrive (so we will not reach the 10th turn), the user is the winner and\r\n"
-									+ "20000 points are added to their final score.\r\n"
-									+ " The last turn (the 10th) is reached and the board has some free space. In this case, the user also\r\n"
-									+ "wins since they avoided the total invasion of the territory and ends the game with the accumulated\r\n"
-									+ "score.\r\n"
-									+ "When all the squares on the board are occupied by an invader and there is no possibility,\r\n"
-									+ "therefore, of continuing to place new invaders. In this case, the invader is considered the winner and\r\n"
-									+ "the user ends with 0 points.");
-		}
-		return txtArea;
+	    if (txtArea == null) {
+	        txtArea = new JTextArea();
+	        txtArea.setEditable(false);
+	        txtArea.setText("Tutorial for the game:\n\n"
+	                + "The game is played on a 7x7 board. The corners and center squares are non-accessible.\n"
+	                + "There are eight different types of invaders. One invader is the leader.\n"
+	                + "At the start, 5 invaders randomly occupy the board.\n"
+	                + "The player's initial score is 0.\n\n"
+	                + "Scoring:\n"
+	                + "- Group of 3 invaders: +50 points\n"
+	                + "- Group of 4 invaders: +200 points\n"
+	                + "- Group of 5 invaders: +1000 points\n"
+	                + "- Group of 6 invaders: +5000 points\n"
+	                + "- Group of 7 invaders: +10000 points\n\n"
+	                + "Ending the game:\n"
+	                + "- If 5 or more leader-type invaders are eliminated at once, the invasion ends and the player wins, earning 20000 points.\n"
+	                + "- If the 10th turn is reached and there is free space on the board, the player wins with their accumulated score.\n"
+	                + "- If all squares are occupied and no more invaders can be placed, the invaders win, and the player ends with 0 points.");
+	    }
+	    return txtArea;
 	}
+	
+
+
+
+
+
+
 	private void showPn2() {
 		
 		((CardLayout)getPnMain().getLayout()).show(pnMain,"pn2");
@@ -475,6 +542,7 @@ private void showFirst() {
 		for (int i=0;i<5;i++) {
 			getPnCaracters().add(newDissaper(i));
 		}
+		
 		validate();
 	}
 	
@@ -531,7 +599,8 @@ private void showFirst() {
 		}
 		
 		
-			
+		
+		
 		validate();
 	}
 	
@@ -549,20 +618,27 @@ private void showFirst() {
 	{
 		JLabel label = new JLabel("" + i+j);
 		label.setIcon(new ImageIcon(MainWindow.class.getResource(game.getBoard().getPicture(i,j))));
+		
+
+		
+		
+		
+		
+		adaptImage3(label,game.getBoard().getPicture(i,j));
 		return label;
 	}
 	
 	private JLabel newLabel (int i,int j) {
-		//Creamos y ponemos un texto (número) a cada etiqueta
+		
 		JLabel labelBoard = new JLabel("" + i+j);
-		//Fondo y texto en negro para que no se vean los números
+	
 		labelBoard.setBackground(Color.BLACK);
 		labelBoard.setForeground(Color.BLACK);
 		labelBoard.setBorder(new LineBorder(new Color(100, 149, 237), 3));
-		//PASO 5 DRAG AND DROP
+		
 		labelBoard.setTransferHandler(new TransferHandler("icon"));
 		
-		//PASO 7 DRAG AND DROP
+	
 		labelBoard.addPropertyChangeListener(pBT);
 		
 	
@@ -595,21 +671,21 @@ private void showFirst() {
 		
 		if(debug==2)
 		{
-			lbDissapear.setIcon(new ImageIcon(MainWindow.class.getResource(caracters[same])));
+			lbDissapear.setIcon(new ImageIcon(MainWindow.class.getResource(game.getCharacterRandom())));
 			lbDissapear.addMouseListener(pD);
 			
-			//PASO 4 DRAG AND DROP
+			
 			lbDissapear.setTransferHandler(new TransferHandler("icon"));
 		}
 		else
 		{
-			String s= caracters[invaderPicture];
 			
-			lbDissapear.setIcon(new ImageIcon(MainWindow.class.getResource(caracters[invaderPicture])));
-			//PASO 3 DRAG AND DROP
+			
+			lbDissapear.setIcon(new ImageIcon(MainWindow.class.getResource(game.getCharacterPicture(invaderPicture))));
+			
 			lbDissapear.addMouseListener(pD);
 			
-			//PASO 4 DRAG AND DROP
+			
 			lbDissapear.setTransferHandler(new TransferHandler("icon"));
 		}
 		
@@ -678,11 +754,19 @@ private void showFirst() {
 	
 	private void paintSquare(int i,int j) {
 		int poz=(i*7)+j;
+		  JLabel targetLabel = (JLabel) pnBoard.getComponent(poz);
 		Icon imagen = ((JLabel)pnBoard.getComponent(poz)).getIcon();
+		
 		String s=imagen.toString().substring(imagen.toString().length()-10);
+		adaptImage2(targetLabel,s);
+		targetLabel.addPropertyChangeListener(pBT);
 		//ImageIcon icon = ImageFactory.loadImage(game.getBoard().getPicture(i,j));
 		
+		
+	
+		
 		game.getBoard().setPicture(i, j, imagen.toString().substring(imagen.toString().length()-10));
+		End1();
 		
 	}
 	
@@ -710,7 +794,7 @@ private void showFirst() {
 	public void updateGame()
 	{
 		Integer delete=0;
-		boolean s=game.getBoard().comboLeader(leader.substring(5,6));
+		boolean s=game.getBoard().comboLeader(game.getLeader().substring(5,6));
 		for (int i=0;i<game.getBoard().getDim(); i++)
 		{
 			for (int j=0;j<game.getBoard().getDim(); j++)
@@ -719,9 +803,29 @@ private void showFirst() {
 				if(game.getBoard().getEliminate(i, j).equals("eliminate"))
 				{
 					int poz=(i*7)+j;
-					((JLabel)pnBoard.getComponent(poz)).setIcon(null);
-					((JLabel)pnBoard.getComponent(poz)).setTransferHandler(new TransferHandler("icon"));
-					((JLabel)pnBoard.getComponent(poz)).revalidate();
+					
+				      JLabel label = (JLabel) pnBoard.getComponent(poz);
+			            
+			            // Check if pBT listener is already attached to the label
+			            boolean hasListener = false;
+			            for (PropertyChangeListener listener : label.getPropertyChangeListeners()) {
+			                if (listener.equals(pBT)) {
+			                    hasListener = true;
+			                    break;
+			                }
+			            }
+			            
+			            if (!hasListener) {
+			                label.addPropertyChangeListener(pBT);
+			            }
+			            
+			            label.setIcon(null);
+			            label.setTransferHandler(new TransferHandler("icon"));
+			            label.revalidate();
+//					((JLabel)pnBoard.getComponent(poz)).setIcon(null);
+//					((JLabel)pnBoard.getComponent(poz)).setTransferHandler(new TransferHandler("icon"));
+//					
+//					((JLabel)pnBoard.getComponent(poz)).revalidate();
 					
 					
 					
@@ -781,6 +885,7 @@ private void showFirst() {
 	private JButton getBtnConcede() {
 		if (btnConcede == null) {
 			btnConcede = new JButton("Concede");
+			btnConcede.setMnemonic('C');
 			btnConcede.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -875,7 +980,7 @@ private void showFirst() {
 	private JLabel getLblLeaderIcon() {
 		if (lblLeaderIcon == null) {
 			lblLeaderIcon = new JLabel("");
-			lblLeaderIcon.setIcon(new ImageIcon(MainWindow.class.getResource(leader)));
+			lblLeaderIcon.setIcon(new ImageIcon(MainWindow.class.getResource(game.getLeader())));
 			lblLeaderIcon.setBounds(10, 99, 88, 90);
 		}
 		return lblLeaderIcon;
@@ -916,10 +1021,12 @@ private void showFirst() {
 	private JButton getBtnPrize() {
 		if (btnPrize == null) {
 			btnPrize = new JButton("Choose prize");
+			btnPrize.setMnemonic('C');
 			btnPrize.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					showPrize();
+					game.setMoney(game.getScore());
 				}
 			});
 			btnPrize.setBackground(new Color(0, 255, 0));
@@ -952,6 +1059,7 @@ private void showFirst() {
 	private JButton getBtnLeave() {
 		if (btnLeave == null) {
 			btnLeave = new JButton("Exit");
+			btnLeave.setMnemonic('E');
 			btnLeave.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1006,6 +1114,8 @@ private void showFirst() {
 		button.setIcon(new ImageIcon(tmpImagen.getImage().getScaledInstance(
 				ancho, alto, Image.SCALE_SMOOTH)));
 	}
+	
+	
 	
 	
 	private void createProductButtons()
@@ -1182,7 +1292,7 @@ private void showFirst() {
 		if (txtType == null) {
 			txtType = new JTextField();
 			txtType.setEditable(false);
-			txtType.setBounds(100, 27, 328, 28);
+			txtType.setBounds(100, 27, 387, 28);
 			txtType.setColumns(10);
 		}
 		return txtType;
@@ -1206,7 +1316,7 @@ private void showFirst() {
 		if (txtName == null) {
 			txtName = new JTextField();
 			txtName.setEditable(false);
-			txtName.setBounds(100, 79, 328, 28);
+			txtName.setBounds(100, 79, 387, 28);
 			txtName.setColumns(10);
 		}
 		return txtName;
@@ -1215,7 +1325,7 @@ private void showFirst() {
 		if (txtPoints == null) {
 			txtPoints = new JTextField();
 			txtPoints.setEditable(false);
-			txtPoints.setBounds(100, 242, 328, 28);
+			txtPoints.setBounds(100, 242, 378, 28);
 			txtPoints.setColumns(10);
 		}
 		return txtPoints;
@@ -1283,15 +1393,18 @@ private void showFirst() {
 		if (pnCommand == null) {
 			pnCommand = new JPanel();
 			pnCommand.setLayout(new GridLayout(0, 3, 0, 0));
-			pnCommand.add(getBtnDelete());
-			pnCommand.add(getBtnAdd());
 			pnCommand.add(getBtnContinue());
+			
+			pnCommand.add(getBtnAdd());
+			pnCommand.add(getBtnDelete());
+			
 		}
 		return pnCommand;
 	}
 	private JButton getBtnAdd() {
 		if (btnAdd == null) {
 			btnAdd = new JButton("Add");
+			btnAdd.setMnemonic('A');
 			btnAdd.setEnabled(false);
 			btnAdd.addActionListener(new ActionListener() {
 				@Override
@@ -1300,7 +1413,7 @@ private void showFirst() {
 					 Integer units = (Integer) spUnits.getValue();
 					addOrder(p,units);			
 					
-					 Available();
+					 //Available();
 						 
 					
 					 
@@ -1312,16 +1425,20 @@ private void showFirst() {
 	
 	private void addOrder(Product p,Integer units)
 	{
-		Float s=game.getScore()-(p.getPrice()*units);
+		game.addToOrder(p, units);
+		
+		Float s = game.getMoney();
 		
 		if(s<0)
 		{
-			JOptionPane.showMessageDialog(null, "Error: you don t have enough points");
+			JOptionPane.showMessageDialog(null, "Error: Not Enough Points.Please choose another item");
+			game.deleteOrder(p, units);
 		}
 		else
 		{
-			game.addToOrder(p, units);
+			
 			 showInList(p);
+			 getTxtAvailable().setText(s.toString());
 			 getBtnContinue().setEnabled(true);
 		}
 		
@@ -1346,6 +1463,7 @@ private void showFirst() {
 	private JButton getBtnContinue() {
 		if (btnContinue == null) {
 			btnContinue = new JButton("Continue");
+			btnContinue.setMnemonic('C');
 			btnContinue.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1360,6 +1478,7 @@ private void showFirst() {
 	private JButton getBtnDelete() {
 		if (btnDelete == null) {
 			btnDelete = new JButton("Delete");
+			btnDelete.setMnemonic('D');
 			btnDelete.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1370,7 +1489,8 @@ private void showFirst() {
 						 
 						 game.deleteOrder(a, units);
 						 deleteInList(a);
-						 Available();
+						 //Available();
+						 getTxtAvailable().setText(game.getMoney().toString());
 						
 					}
 					 
@@ -1383,23 +1503,6 @@ private void showFirst() {
 		return btnDelete;
 	}
 	
-	private void Available()
-	{
-		Float s=game.getScore()-game.getOrderTotal();
-		
-		if(s<0)
-		{
-			JOptionPane.showMessageDialog(null, "Error: you don t have enough points");
-
-		}
-		else
-		{
-			getTxtAvailable().setText(s.toString());
-		}
-		
-	
-	}
-	
 	private void deleteInList(Product a)
 	{
 		
@@ -1410,7 +1513,7 @@ private void showFirst() {
 	private JTextArea getTxtDescription() {
 		if (txtDescription == null) {
 			txtDescription = new JTextArea();
-			txtDescription.setBounds(100, 144, 328, 63);
+			txtDescription.setBounds(100, 144, 387, 63);
 		}
 		return txtDescription;
 	}
@@ -1419,18 +1522,23 @@ private void showFirst() {
 			pnId = new JPanel();
 			pnId.setLayout(new BorderLayout(0, 0));
 			pnId.add(getPnConfirm(), BorderLayout.CENTER);
+			pnId.add(getLblMario(), BorderLayout.EAST);
+			pnId.add(getPanel_1(), BorderLayout.SOUTH);
 		}
 		return pnId;
 	}
 	private JPanel getPnConfirm() {
 		if (pnConfirm == null) {
 			pnConfirm = new JPanel();
-			pnConfirm.setLayout(null);
-			pnConfirm.add(getLblPlease());
-			pnConfirm.add(getLblId());
-			pnConfirm.add(getTxtID());
-			pnConfirm.add(getButton_1_1());
-			pnConfirm.add(getButton_1_2());
+			pnConfirm.setLayout(new BorderLayout(0, 0));
+			pnConfirm.add(getLblPlease(), BorderLayout.NORTH);
+		
+			
+	
+			pnConfirm.add(getPanel_2(), BorderLayout.WEST);
+		
+			pnConfirm.add(getLblNewLabel_2(), BorderLayout.SOUTH);
+			pnConfirm.add(getPnIdText(), BorderLayout.CENTER);
 		}
 		return pnConfirm;
 	}
@@ -1438,22 +1546,12 @@ private void showFirst() {
 		if (lblPlease == null) {
 			lblPlease = new JLabel("Please enter ID:");
 			lblPlease.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-			lblPlease.setBounds(147, 143, 285, 19);
 		}
 		return lblPlease;
-	}
-	private JLabel getLblId() {
-		if (lblId == null) {
-			lblId = new JLabel("ID:");
-			lblId.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblId.setBounds(152, 197, 67, 24);
-		}
-		return lblId;
 	}
 	private JTextField getTxtID() {
 		if (txtID == null) {
 			txtID = new JTextField();
-			txtID.setBounds(267, 197, 414, 29);
 			txtID.setColumns(10);
 		}
 		return txtID;
@@ -1461,6 +1559,7 @@ private void showFirst() {
 	private JButton getButton_1_1() {
 		if (btnConfirm == null) {
 			btnConfirm = new JButton("Confirm");
+			btnConfirm.setMnemonic('C');
 			btnConfirm.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1476,13 +1575,13 @@ private void showFirst() {
 				}
 			});
 			btnConfirm.setBackground(new Color(0, 255, 0));
-			btnConfirm.setBounds(646, 283, 124, 36);
 		}
 		return btnConfirm;
 	}
 	private JButton getButton_1_2() {
 		if (btnBack == null) {
 			btnBack = new JButton("Back");
+			btnBack.setMnemonic('B');
 			btnBack.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1490,7 +1589,6 @@ private void showFirst() {
 				}
 			});
 			btnBack.setBackground(new Color(255, 0, 0));
-			btnBack.setBounds(25, 283, 120, 36);
 		}
 		return btnBack;
 	}
@@ -1505,10 +1603,11 @@ private void showFirst() {
 	private JPanel getPnMessage() {
 		if (pnMessage == null) {
 			pnMessage = new JPanel();
-			pnMessage.setLayout(null);
-			pnMessage.add(getLblCongrats());
-			pnMessage.add(getLblPick());
-			pnMessage.add(getButton_1_3());
+			pnMessage.setLayout(new BorderLayout(0, 0));
+			pnMessage.add(getLblCongrats(), BorderLayout.NORTH);
+			pnMessage.add(getLblPick(), BorderLayout.WEST);
+			pnMessage.add(getButton_1_3(), BorderLayout.SOUTH);
+			pnMessage.add(getLblMario2(), BorderLayout.EAST);
 		}
 		return pnMessage;
 	}
@@ -1516,7 +1615,6 @@ private void showFirst() {
 		if (lblCongrats == null) {
 			lblCongrats = new JLabel("Congratulations!!");
 			lblCongrats.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-			lblCongrats.setBounds(197, 117, 339, 41);
 		}
 		return lblCongrats;
 	}
@@ -1524,13 +1622,13 @@ private void showFirst() {
 		if (lblPick == null) {
 			lblPick = new JLabel("You can pick up your prizez at your shop");
 			lblPick.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			lblPick.setBounds(197, 182, 404, 41);
 		}
 		return lblPick;
 	}
 	private JButton getButton_1_3() {
 		if (btnFinish == null) {
 			btnFinish = new JButton("Finish");
+			btnFinish.setMnemonic('F');
 			btnFinish.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1540,7 +1638,6 @@ private void showFirst() {
 			});
 			btnFinish.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnFinish.setBackground(new Color(0, 255, 0));
-			btnFinish.setBounds(302, 254, 159, 48);
 		}
 		return btnFinish;
 	}
@@ -1569,6 +1666,8 @@ private void showFirst() {
 	private JMenuItem getMntmAbout() {
 		if (mntmAbout == null) {
 			mntmAbout = new JMenuItem("About");
+			mntmAbout.setMnemonic('A');
+			mntmAbout.setAccelerator(KeyStroke.getKeyStroke('A', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 			mntmAbout.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1583,6 +1682,8 @@ private void showFirst() {
 	private JMenuItem getMntmContens() {
 		if (mntmContens == null) {
 			mntmContens = new JMenuItem("Contents");
+			mntmContens.setMnemonic('C');
+			mntmContens.setAccelerator(KeyStroke.getKeyStroke('C', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		}
 		return mntmContens;
 	}
@@ -1617,5 +1718,148 @@ private void showFirst() {
 		}
 		return selector;
 		
+	}
+	private JPanel getPnDown() {
+		if (pnDown == null) {
+			pnDown = new JPanel();
+			pnDown.setLayout(new BorderLayout(0, 0));
+			pnDown.add(getBtnExit(), BorderLayout.EAST);
+			pnDown.add(getBtnStart(), BorderLayout.WEST);
+		}
+		return pnDown;
+	}
+	private JButton getButton_1_4() {
+		if (btnNewButton == null) {
+			btnNewButton = new JButton("New button");
+		}
+		return btnNewButton;
+	}
+	private JButton getButton_1_5() {
+		if (btnNewButton_1 == null) {
+			btnNewButton_1 = new JButton("New button");
+			btnNewButton_1.setMaximumSize(new Dimension(100, 21));
+		}
+		return btnNewButton_1;
+	}
+	private JPanel getPnTicket() {
+		if (pnTicket == null) {
+			pnTicket = new JPanel();
+			pnTicket.setLayout(new BorderLayout(0, 0));
+			pnTicket.add(getLblLink(), BorderLayout.EAST);
+			pnTicket.add(getPnValidate(), BorderLayout.CENTER);
+		}
+		return pnTicket;
+	}
+	private JLabel getLblNewLabel_1() {
+		if (lblNewLabel_1 == null) {
+			lblNewLabel_1 = new JLabel("New label");
+		}
+		return lblNewLabel_1;
+	}
+	private JPanel getPnValidate() {
+		if (pnValidate == null) {
+			pnValidate = new JPanel();
+			pnValidate.setLayout(new BorderLayout(0, 0));
+			
+		
+			
+			
+			
+			pnValidate.add(getLblTicket(), BorderLayout.NORTH);
+			pnValidate.add(getPnText(), BorderLayout.CENTER);
+		}
+		return pnValidate;
+	}
+	
+	
+	private JLabel getLblTicket() { 
+		if (lblTicket == null) {
+		lblTicket = new
+			  JLabel("Enter ticket number:");
+			  lblTicket.setFont(new Font("Tahoma", Font.PLAIN, 17)); 
+			  } 
+	return lblTicket; }
+	
+	
+	 
+			 
+	
+	
+	private JPanel getPnText() {
+		if (pnText == null) {
+			pnText = new JPanel();
+			pnText.setLayout(new BorderLayout(0, 0));
+			pnText.add(getTxtTicket(), BorderLayout.NORTH);
+			pnText.add(getLblWelcome(), BorderLayout.CENTER);
+		}
+		return pnText;
+	}
+	private JTextField  getTxtTicket() {
+		if (txtTicket == null) {
+			txtTicket = new JTextField();
+			txtTicket.setColumns(10);
+		}
+		return txtTicket;
+	}
+	private JPanel getPanel_1() {
+		if (panel_1 == null) {
+			panel_1 = new JPanel();
+			panel_1.setLayout(new BorderLayout(0, 0));
+			panel_1.add(getButton_1_1(), BorderLayout.EAST);
+			panel_1.add(getButton_1_2(), BorderLayout.WEST);
+		}
+		return panel_1;
+	}
+	private JPanel getPanel_2() {
+		if (panel_2 == null) {
+			panel_2 = new JPanel();
+			panel_2.setLayout(new BorderLayout(0, 0));
+		
+		}
+		return panel_2;
+	}
+	private JLabel getLblNewLabel_2() {
+		if (lblNewLabel_2 == null) {
+			lblNewLabel_2 = new JLabel("  Please enter your valid ID.");
+			lblNewLabel_2.setForeground(new Color(255, 0, 0));
+			lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		}
+		return lblNewLabel_2;
+	}
+	private JLabel getLblWelcome() {
+		if (lblWelcome == null) {
+			lblWelcome = new JLabel("       Press start button after you enter a valid ticket");
+			lblWelcome.setForeground(new Color(255, 0, 0));
+			lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 17));
+		}
+		return lblWelcome;
+	}
+	private JLabel getLblMario() {
+		if (lblMario == null) {
+			lblMario = new JLabel("");
+			lblMario.setIcon(new ImageIcon(MainWindow.class.getResource("/img/mariopr.png")));
+		}
+		return lblMario;
+	}
+	private JLabel getLblMario2() {
+		if (lblMario2 == null) {
+			lblMario2 = new JLabel("");
+			lblMario2.setIcon(new ImageIcon(MainWindow.class.getResource("/img/mariopr.png")));
+		}
+		return lblMario2;
+	}
+	private JPanel getPnIdText() {
+		if (pnIdText == null) {
+			pnIdText = new JPanel();
+			pnIdText.setLayout(new BorderLayout(0, 0));
+			pnIdText.add(getTxtID(), BorderLayout.NORTH);
+		}
+		return pnIdText;
+	}
+	private JSeparator getSeparator() {
+		if (separator == null) {
+			separator = new JSeparator();
+		}
+		return separator;
 	}
 }

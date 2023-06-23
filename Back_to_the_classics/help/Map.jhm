@@ -9,5 +9,6 @@
 <mapID target="play" url="Sources/play.html" />
 <mapID target="quit" url="Sources/quit.html" />
 <mapID target="shop" url="Sources/shop.html" />
+<mapID target="pickup" url="Sources/pickup.html" />
 
 </map>
