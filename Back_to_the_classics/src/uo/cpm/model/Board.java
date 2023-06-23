@@ -8,14 +8,17 @@ public class Board {
 	
 	
 	public Board() {
-		
 		cells = new Cell[dim][dim];
 		for (int i=0;i<dim;i++)
 		{
 			for(int j=0;j<dim;j++)
 			{
+				
+				
 				cells[i][j]=new Blank();
 			}
+			
+			
 		}
 		
 		for(int i=0;i<5;i++)
@@ -27,20 +30,25 @@ public class Board {
 			{
 				invaderPosition1++;
 				invaderPosition2++;
+				
 			}
 			if(invaderPosition1==6&&invaderPosition2==0)
 			{
+				
 				invaderPosition2++;
+				
 			}
 			if(invaderPosition1==0&&invaderPosition2==6)
 			{
 				invaderPosition1++;
 				invaderPosition2--;
+				
 			}
 			if(invaderPosition1==3&&invaderPosition2==3)
 			{
 				invaderPosition1++;
 				invaderPosition2++;
+				
 			}
 			cells[invaderPosition1][invaderPosition2]= new Caracter();
 		}
@@ -338,7 +346,6 @@ public class Board {
 				if(i==0&&j==0)
 				{
 					
-					
 				}
 				else if(i==6&&j==0)
 				{
@@ -349,16 +356,13 @@ public class Board {
 				else if(i==0&&j==6)
 				{
 					
-					
 				}
 				else if(i==3&&j==3)
 				{
 					
-					
 				}
 				else if(i==6&&j==6)
 				{
-					
 					
 				}
 				else if(cells[i][j].getPicture().equals(""))

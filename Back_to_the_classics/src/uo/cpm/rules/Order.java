@@ -19,25 +19,7 @@ public class Order {
 		
 	}
 
-//	public void add(Product item, int units){
-//		Product itemInOrder = null;
-//	
-//		for (Product a : orderList){
-//			if (a.getCode().equals(item.getCode()))
-//			{
-//				itemInOrder = a;
-//				itemInOrder.setUnits(itemInOrder.getUnits()+units);
-//				break;
-//			}
-//		}
-//		
-//		if (itemInOrder == null){
-//			Product itemToOrder = new Product(item);
-//			itemToOrder.setUnits(units);
-//			orderList.add(itemToOrder);
-//		}
-//	}
-	
+
 	
 	public void add(Product item, int units) {
 	    Product itemInOrder = null;
@@ -60,34 +42,7 @@ public class Order {
 
 	
 	
-	
-//	public void delete(Product item, int units )
-//    {
-//    	Product itemInOrder = null;
-//    	
-//
-//
-//    	for (Product a : orderList) {
-//    		
-//    	    if (a.getCode().equals(item.getCode()) ) {
-//    		itemInOrder = a;
-//    		
-//    		if(itemInOrder.getUnits()-units<0)
-//    		{
-//    			itemInOrder.setUnits(0);
-//    			break;
-//    		}
-//    		itemInOrder.setUnits(itemInOrder.getUnits() - units);
-//
-//
-//    		break;
-//    	    }
-//    	}
-//    	
-//
-//    	
-//    }
-//	
+
 	
 	public void delete(Product item, int units) {
 	    for (Product a : orderList) {

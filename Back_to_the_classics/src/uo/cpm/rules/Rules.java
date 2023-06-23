@@ -37,7 +37,7 @@ public class Rules {
 			((Caracter)board.getCells()[i][j]).setErased(true);
 			
 		}
-		//score = score + board.getCells()[i][j].discover();
+	
 	}
 	
 	
@@ -47,10 +47,7 @@ public class Rules {
 		{
 			return true;
 		}
-		//if(this.wave==11)
-		//{
-			//return true;
-		//}
+		
 		
 		return false;
 	}

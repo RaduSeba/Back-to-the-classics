@@ -42,6 +42,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -204,18 +205,6 @@ public class MainWindow extends JFrame {
 		}
 	}
 	
-	private void associateImagesToLabels()
-	{
-		
-		for (int i = 0; i < game.getBoard().getDim(); i++) {
-		    for (int j = 0; j < game.getBoard().getDim(); j++) {
-		        JLabel label = (JLabel) pnBoard.getComponent(i * game.getBoard().getDim() + j);
-		        adaptImage2(label, game.getBoard().getPicture(i, j));
-		    }
-		}
-
-		
-	}
 	
 	private void adaptImage2(JLabel label, String imagePath) {
 		ImageIcon tmpImagen = new ImageIcon(getClass().getResource(imagePath));
@@ -278,7 +267,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private boolean isIncorrect2() {
-		Ticket t=game.getTicket(txtTicket.getText());
+		Ticket t =  game.getTicket(txtTicket.getText());
 		if(t==null)
 		{
 			return true;
@@ -291,7 +280,6 @@ public class MainWindow extends JFrame {
 		}
 		return true;
 	}
-	
 	
 	
 	
@@ -641,16 +629,16 @@ private void showFirst() {
 	}
 	
 	private JLabel newLabel (int i,int j) {
-		//Creamos y ponemos un texto (número) a cada etiqueta
+		
 		JLabel labelBoard = new JLabel("" + i+j);
-		//Fondo y texto en negro para que no se vean los números
+	
 		labelBoard.setBackground(Color.BLACK);
 		labelBoard.setForeground(Color.BLACK);
 		labelBoard.setBorder(new LineBorder(new Color(100, 149, 237), 3));
-		//PASO 5 DRAG AND DROP
+		
 		labelBoard.setTransferHandler(new TransferHandler("icon"));
 		
-		//PASO 7 DRAG AND DROP
+	
 		labelBoard.addPropertyChangeListener(pBT);
 		
 	
@@ -686,7 +674,7 @@ private void showFirst() {
 			lbDissapear.setIcon(new ImageIcon(MainWindow.class.getResource(game.getCharacterRandom())));
 			lbDissapear.addMouseListener(pD);
 			
-			//PASO 4 DRAG AND DROP
+			
 			lbDissapear.setTransferHandler(new TransferHandler("icon"));
 		}
 		else
@@ -694,10 +682,10 @@ private void showFirst() {
 			
 			
 			lbDissapear.setIcon(new ImageIcon(MainWindow.class.getResource(game.getCharacterPicture(invaderPicture))));
-			//PASO 3 DRAG AND DROP
+			
 			lbDissapear.addMouseListener(pD);
 			
-			//PASO 4 DRAG AND DROP
+			
 			lbDissapear.setTransferHandler(new TransferHandler("icon"));
 		}
 		
@@ -1443,7 +1431,7 @@ private void showFirst() {
 		
 		if(s<0)
 		{
-			JOptionPane.showMessageDialog(null, "Error: you don t have enough points");
+			JOptionPane.showMessageDialog(null, "Error: Not Enough Points.Please choose another item");
 			game.deleteOrder(p, units);
 		}
 		else
@@ -1679,6 +1667,7 @@ private void showFirst() {
 		if (mntmAbout == null) {
 			mntmAbout = new JMenuItem("About");
 			mntmAbout.setMnemonic('A');
+			mntmAbout.setAccelerator(KeyStroke.getKeyStroke('A', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 			mntmAbout.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1694,6 +1683,7 @@ private void showFirst() {
 		if (mntmContens == null) {
 			mntmContens = new JMenuItem("Contents");
 			mntmContens.setMnemonic('C');
+			mntmContens.setAccelerator(KeyStroke.getKeyStroke('C', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		}
 		return mntmContens;
 	}
@@ -1838,7 +1828,7 @@ private void showFirst() {
 	}
 	private JLabel getLblWelcome() {
 		if (lblWelcome == null) {
-			lblWelcome = new JLabel("Press start button after you enter a valid ticket");
+			lblWelcome = new JLabel("       Press start button after you enter a valid ticket");
 			lblWelcome.setForeground(new Color(255, 0, 0));
 			lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 17));
 		}
