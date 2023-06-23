@@ -47,10 +47,10 @@ public class Rules {
 		{
 			return true;
 		}
-		if(this.wave==11)
-		{
-			return true;
-		}
+		//if(this.wave==11)
+		//{
+			//return true;
+		//}
 		
 		return false;
 	}

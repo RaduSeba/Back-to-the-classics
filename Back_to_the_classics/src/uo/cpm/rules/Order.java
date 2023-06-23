@@ -19,52 +19,94 @@ public class Order {
 		
 	}
 
-	public void add(Product item, int units){
-		Product itemInOrder = null;
+//	public void add(Product item, int units){
+//		Product itemInOrder = null;
+//	
+//		for (Product a : orderList){
+//			if (a.getCode().equals(item.getCode()))
+//			{
+//				itemInOrder = a;
+//				itemInOrder.setUnits(itemInOrder.getUnits()+units);
+//				break;
+//			}
+//		}
+//		
+//		if (itemInOrder == null){
+//			Product itemToOrder = new Product(item);
+//			itemToOrder.setUnits(units);
+//			orderList.add(itemToOrder);
+//		}
+//	}
 	
-		for (Product a : orderList){
-			if (a.getCode().equals(item.getCode()))
-			{
-				itemInOrder = a;
-				itemInOrder.setUnits(itemInOrder.getUnits()+units);
-				break;
-			}
-		}
-		
-		if (itemInOrder == null){
-			Product itemToOrder = new Product(item);
-			itemToOrder.setUnits(units);
-			orderList.add(itemToOrder);
-		}
+	
+	public void add(Product item, int units) {
+	    Product itemInOrder = null;
+
+	    for (Product a : orderList) {
+	        if (a.getCode().equals(item.getCode())) {
+	            itemInOrder = a;
+	            break;
+	        }
+	    }
+
+	    if (itemInOrder != null) {
+	        itemInOrder.setUnits(itemInOrder.getUnits() + units);
+	    } else {
+	        Product itemToOrder = new Product(item);
+	        itemToOrder.setUnits(units);
+	        orderList.add(itemToOrder);
+	    }
 	}
+
 	
-	public void delete(Product item, int units )
-    {
-    	Product itemInOrder = null;
-    	
-
-
-    	for (Product a : orderList) {
-    		
-    	    if (a.getCode().equals(item.getCode()) ) {
-    		itemInOrder = a;
-    		
-    		if(itemInOrder.getUnits()-units<0)
-    		{
-    			itemInOrder.setUnits(0);
-    			break;
-    		}
-    		itemInOrder.setUnits(itemInOrder.getUnits() - units);
-
-
-    		break;
-    	    }
-    	}
-    	
-
-    	
-    }
 	
+	
+//	public void delete(Product item, int units )
+//    {
+//    	Product itemInOrder = null;
+//    	
+//
+//
+//    	for (Product a : orderList) {
+//    		
+//    	    if (a.getCode().equals(item.getCode()) ) {
+//    		itemInOrder = a;
+//    		
+//    		if(itemInOrder.getUnits()-units<0)
+//    		{
+//    			itemInOrder.setUnits(0);
+//    			break;
+//    		}
+//    		itemInOrder.setUnits(itemInOrder.getUnits() - units);
+//
+//
+//    		break;
+//    	    }
+//    	}
+//    	
+//
+//    	
+//    }
+//	
+	
+	public void delete(Product item, int units) {
+	    for (Product a : orderList) {
+	        if (a.getCode().equals(item.getCode())) {
+	            if (a.getUnits() - units < 0) {
+	                a.setUnits(0);
+	            } else {
+	                a.setUnits(a.getUnits() - units);
+	            }
+
+	            if (a.getUnits() == 0) {
+	                orderList.remove(a);
+	            }
+
+	            break;
+	        }
+	    }
+	}
+
 	
 	
 	

@@ -8,17 +8,14 @@ public class Board {
 	
 	
 	public Board() {
+		
 		cells = new Cell[dim][dim];
 		for (int i=0;i<dim;i++)
 		{
 			for(int j=0;j<dim;j++)
 			{
-				
-				
 				cells[i][j]=new Blank();
 			}
-			
-			
 		}
 		
 		for(int i=0;i<5;i++)
@@ -30,25 +27,20 @@ public class Board {
 			{
 				invaderPosition1++;
 				invaderPosition2++;
-				
 			}
 			if(invaderPosition1==6&&invaderPosition2==0)
 			{
-				
 				invaderPosition2++;
-				
 			}
 			if(invaderPosition1==0&&invaderPosition2==6)
 			{
 				invaderPosition1++;
 				invaderPosition2--;
-				
 			}
 			if(invaderPosition1==3&&invaderPosition2==3)
 			{
 				invaderPosition1++;
 				invaderPosition2++;
-				
 			}
 			cells[invaderPosition1][invaderPosition2]= new Caracter();
 		}
@@ -295,6 +287,46 @@ public class Board {
 					
 		
 	}
+	
+	
+//	public void checkInvader(int i, int j) {
+//	    String find = cells[i][j].getPicture();
+//
+//	    // Check for horizontal patterns
+//	    if (j >= 2 && cells[i][j - 2].getSubstring().equals(find) && cells[i][j - 1].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i][j - 1] = new Eliminate(find);
+//	        cells[i][j - 2] = new Eliminate(find);
+//	    } else if (j <= 4 && cells[i][j + 1].getSubstring().equals(find) && cells[i][j + 2].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i][j + 1] = new Eliminate(find);
+//	        cells[i][j + 2] = new Eliminate(find);
+//	    }
+//
+//	    // Check for vertical patterns
+//	    if (i >= 2 && cells[i - 2][j].getSubstring().equals(find) && cells[i - 1][j].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i - 1][j] = new Eliminate(find);
+//	        cells[i - 2][j] = new Eliminate(find);
+//	    } else if (i <= 4 && cells[i + 1][j].getSubstring().equals(find) && cells[i + 2][j].getSubstring().equals(find)) {
+//	        cells[i][j] = new Eliminate(find);
+//	        cells[i + 1][j] = new Eliminate(find);
+//	        cells[i + 2][j] = new Eliminate(find);
+//	    }
+//
+//	    // Check for cross patterns
+//	    if (i >= 1 && i <= 5 && j >= 1 && j <= 5) {
+//	        if (cells[i - 1][j].getSubstring().equals(find) && cells[i + 1][j].getSubstring().equals(find) &&
+//	            cells[i][j - 1].getSubstring().equals(find) && cells[i][j + 1].getSubstring().equals(find)) {
+//	            cells[i][j] = new Eliminate(find);
+//	            cells[i - 1][j] = new Eliminate(find);
+//	            cells[i + 1][j] = new Eliminate(find);
+//	            cells[i][j - 1] = new Eliminate(find);
+//	            cells[i][j + 1] = new Eliminate(find);
+//	        }
+//	    }
+//	}
+
 	
 	
 	public boolean isFull()

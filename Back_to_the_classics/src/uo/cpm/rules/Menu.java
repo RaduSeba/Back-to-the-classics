@@ -1,8 +1,9 @@
-package uo.cpm.model;
+package uo.cpm.rules;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import uo.cpm.model.Product;
 import uo.cpm.util.FileUtilProduct;
 
 

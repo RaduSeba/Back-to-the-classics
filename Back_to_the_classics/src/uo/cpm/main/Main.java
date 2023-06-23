@@ -14,7 +14,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		final Game game = new Game ();
-		int debug=0;
+		int debug=2;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
